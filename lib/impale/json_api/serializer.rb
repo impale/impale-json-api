@@ -1,11 +1,14 @@
 module Impale
   module JsonApi
     class Serializer
-      attr_reader :input, :attributes
+      attr_accessor :input
+      attr_reader :attributes, :type, :id
 
       def initialize(input)
         @input = input
         @attributes = self.class.attributes
+        @type = self.class.type
+        @id = self.class.id
         @traversor = Impale::JsonApi::HashObjectTraversor.new
       end
 
@@ -34,6 +37,20 @@ module Impale
             @attributes = _attributes
           end
           @attributes
+        end
+
+        def type(type=nil)
+          if type
+            @type = type
+          end
+          @type
+        end
+
+        def id(id=nil)
+          if id
+            @id = id
+          end
+          @id
         end
       end
 
