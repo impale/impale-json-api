@@ -8,11 +8,11 @@ end
 
 describe Impale::JsonApi::Serializer do
   let(:person) { OpenStruct.new(name: 'Pam', age: 24, digest_password: 'DWAaa')}
-  subject(:serializer) { serializer_class.new(person) }
+  subject(:serializer) { serializer_class.new([person, person]) }
 
   describe 'initialize' do
     it 'has input' do
-      expect(serializer.input).to eq person
+      expect(serializer.input).to eq [person, person]
     end
   end
 

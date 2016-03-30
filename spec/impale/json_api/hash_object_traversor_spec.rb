@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe Impale::JsonApi::HashObjectTraversor do
   let(:person) { OpenStruct.new(name: 'Pam', age: 24, digest_password: 'DWAaa')}
-  subject(:traversor) { Impale::JsonApi::HashObjectTraversor.new(person) }
+  subject(:traversor) do
+    t = Impale::JsonApi::HashObjectTraversor.new
+    t.input = person
+    t
+  end
 
   describe 'traverse_non_nested' do
     context 'not renamed' do

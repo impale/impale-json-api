@@ -1,9 +1,7 @@
 module Impale
   module JsonApi
     class HashObjectTraversor
-      def initialize(obj)
-        @obj = obj
-      end
+      attr_accessor :input
 
       # @param [Array] list
       # @return [Hash]
@@ -12,10 +10,10 @@ module Impale
         list.each do |key|
           if key.is_a? Hash
             key.each do |k, v|
-              hash[k] = @obj.send(v)
+              hash[k] = @input.send(v)
             end
           else
-            hash[key] = @obj.send(key)
+            hash[key] = @input.send(key)
           end
         end
         hash
