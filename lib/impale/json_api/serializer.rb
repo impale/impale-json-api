@@ -1,16 +1,20 @@
 module Impale
   module JsonApi
     class Serializer
-      attr_reader :obj, :attributes
+      attr_reader :input, :attributes
 
-      def initialize(obj)
-        @obj = obj
+      def initialize(input)
+        @input = input
         @attributes = self.class.attributes
-        @traversor = Impale::JsonApi::HashObjectTraversor.new(@obj)
       end
 
       def serialize
-        @traversor.traverse_non_nested(@attributes)
+        @traversor = Impale::JsonApi::HashObjectTraversor.new(@input)
+        {
+          data: [
+            attributes: @traversor.traverse_non_nested(@attributes)
+          ]
+        }
       end
 
       class << self

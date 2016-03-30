@@ -11,8 +11,8 @@ describe Impale::JsonApi::Serializer do
   subject(:serializer) { serializer_class.new(person) }
 
   describe 'initialize' do
-    it 'has obj' do
-      expect(serializer.obj).to eq person
+    it 'has input' do
+      expect(serializer.input).to eq person
     end
   end
 
@@ -20,14 +20,13 @@ describe Impale::JsonApi::Serializer do
     it 'has attributes' do
       expect(serializer.attributes).to eq [:name, :age, password: :digest_password]
     end
-  end
-
-  describe 'serialize' do
-    it 'returns a hash' do
-      hash = serializer.serialize
-      expect(hash[:name]).to eq person.name
-      expect(hash[:age]).to eq person.age
-      expect(hash[:password]).to eq person.digest_password
+    describe 'serialize' do
+      it 'returns a hash' do
+        hash = serializer.serialize[:data][0][:attributes]
+        expect(hash[:name]).to eq person.name
+        expect(hash[:age]).to eq person.age
+        expect(hash[:password]).to eq person.digest_password
+      end
     end
   end
 end
