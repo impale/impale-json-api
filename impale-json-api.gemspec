@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'impale/json/api/version'
+require 'impale/json_api/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'impale-json-api'
-  spec.version       = Impale::Json::Api::VERSION
+  spec.version       = Impale::JsonApi::VERSION
   spec.authors       = ['Sebyx07']
   spec.email         = ['gore.sebyx@yahoo.com']
 
