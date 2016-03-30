@@ -31,6 +31,8 @@ module Impale
       end
 
       class << self
+        # @param [Array] _attributes
+        # @return [Array]
         def attributes(*_attributes)
           unless _attributes.empty?
             @attributes = _attributes
@@ -39,10 +41,12 @@ module Impale
         end
       end
 
+      # @param [Object] path
       def change_path(path)
         @traversor.input = path
       end
 
+      # @return [Hash]
       def build_node
         {
           attributes: @traversor.traverse_non_nested(@attributes)
