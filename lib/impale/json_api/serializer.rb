@@ -9,10 +9,6 @@ module Impale
         @traversor = Impale::JsonApi::HashObjectTraversor.new
       end
 
-      def _serialize
-
-      end
-
       def serialize
         data = []
         if @input.is_a?(Array)
