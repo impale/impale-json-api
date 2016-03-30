@@ -6,6 +6,11 @@ module Impale
       def initialize(obj)
         @obj = obj
         @attributes = self.class.attributes
+        @traversor = Impale::JsonApi::HashObjectTraversor.new(@obj)
+      end
+
+      def serialize
+        @traversor.traverse_non_nested(@attributes)
       end
 
       class << self

@@ -18,7 +18,16 @@ describe Impale::JsonApi::Serializer do
 
   describe 'attributes' do
     it 'has attributes' do
-      expect(serializer.attributes).not_to be_nil
+      expect(serializer.attributes).to eq [:name, :age, password: :digest_password]
+    end
+  end
+
+  describe 'serialize' do
+    it 'returns a hash' do
+      hash = serializer.serialize
+      expect(hash[:name]).to eq person.name
+      expect(hash[:age]).to eq person.age
+      expect(hash[:password]).to eq person.digest_password
     end
   end
 end
