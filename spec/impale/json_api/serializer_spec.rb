@@ -38,11 +38,21 @@ describe Impale::JsonApi::Serializer do
       expect(serializer.type).to eq :persons
     end
     describe 'serialize' do
-      xit 'returns a hash' do
-        hash = serializer.serialize[:data][0][:attributes]
-        expect(hash[:name]).to eq person.name
-        expect(hash[:age]).to eq person.age
-        expect(hash[:password]).to eq person.digest_password
+      it 'returns a type' do
+        type = serializer.serialize[:data][0][:type]
+        expect(type).to eq :persons
+      end
+    end
+  end
+
+  describe 'id' do
+    it 'has id' do
+      expect(serializer.id).to eq :name
+    end
+    describe 'serialize' do
+      it 'returns a id' do
+        id = serializer.serialize[:data][0][:id]
+        expect(id).to eq person.name
       end
     end
   end

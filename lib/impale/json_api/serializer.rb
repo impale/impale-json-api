@@ -16,12 +16,10 @@ module Impale
         data = []
         if @input.is_a?(Array)
           data += @input.map do |input|
-            change_path(input)
-            build_node
+            build_node(input)
           end
         else
-          change_path(@input)
-          data << build_node
+          data << build_node(@input)
         end
 
         {
@@ -54,19 +52,18 @@ module Impale
         end
       end
 
-      # @param [Object] path
-      def change_path(path)
-        @traversor.input = path
-      end
-
       # @return [Hash]
-      def build_node
+      # @param [Object] current_object
+      def build_node(current_object)
+        @traversor.input = current_object
         {
+          type: @type,
+          id:  current_object.send(@id),
           attributes: @traversor.traverse_non_nested(@attributes)
         }
       end
 
-      private :change_path, :build_node
+      private :build_node
     end
   end
 end
