@@ -37,18 +37,26 @@ module Impale
           @attributes
         end
 
-        def type(type=nil)
+        def type(type = nil)
           if type
             @type = type
           end
           @type
         end
 
-        def id(id=nil)
+        def id(id = nil)
           if id
             @id = id
           end
           @id
+        end
+
+        def has_many(relationship, args)
+
+        end
+
+        def belongs_to(relationship, args)
+
         end
       end
 
