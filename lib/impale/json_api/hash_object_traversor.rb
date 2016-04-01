@@ -7,6 +7,9 @@ module Impale
       # @return [Hash]
       def traverse_non_nested(list)
         hash = {}
+        unless list
+          return hash
+        end
         list.each do |key|
           if key.is_a? Hash
             key.each do |k, v|

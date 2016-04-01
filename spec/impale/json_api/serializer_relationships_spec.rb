@@ -10,7 +10,7 @@ end
 
 serializer_company_class = Class.new(Impale::JsonApi::Serializer) do
   type :companies
-  id :name
+  id :id
 end
 
 serializer_person_class = Class.new(Impale::JsonApi::Serializer) do
@@ -30,7 +30,7 @@ describe Impale::JsonApi::Serializer do
   end
 
   let(:company) do
-    OpenStruct.new(name: 'company')
+    OpenStruct.new(name: 'company', id: 1)
   end
 
   let(:posts) do
@@ -40,4 +40,15 @@ describe Impale::JsonApi::Serializer do
   end
 
   subject(:serializer) { serializer_person_class.new([person, person]) }
+
+  describe 'belongs' do
+    it 'belongs_to company' do
+      persons = serializer.serialize[:data]
+      persons.each do |person|
+        hash_company = person[:relationships][:company][:data][0]
+        expect(hash_company[:type]).to eq :companies
+        expect(hash_company[:id]).to eq company.id
+      end
+    end
+  end
 end

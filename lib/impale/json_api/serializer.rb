@@ -4,27 +4,27 @@ module Impale
       attr_accessor :input
       attr_reader :attributes, :type, :id
 
-      def initialize(input)
+      def initialize(input, serialize_type =nil)
+        @serialize_type = serialize_type  || :root
         @input = input
         @attributes = self.class.attributes
         @type = self.class.type
         @id = self.class.id
+        @belongs_to_relationships = self.class.belongs_to_relationships
         @traversor = Impale::JsonApi::HashObjectTraversor.new
       end
 
       def serialize
-        data = []
+        output = []
         if @input.is_a?(Array)
-          data += @input.map do |input|
+          output += @input.map do |input|
             build_node(input)
           end
         else
-          data << build_node(@input)
+          output << build_node(@input)
         end
 
-        {
-            data: data
-        }
+        {data: output}
       end
 
       class << self
@@ -56,7 +56,11 @@ module Impale
         end
 
         def belongs_to(relationship, args)
+          belongs_to_relationships.push({relationship: relationship, serializer: args[:serializer]})
+        end
 
+        def belongs_to_relationships
+          @belongs_to_relationships ||= []
         end
       end
 
@@ -64,14 +68,34 @@ module Impale
       # @param [Object] current_object
       def build_node(current_object)
         @traversor.input = current_object
-        {
-          type: @type,
-          id:  current_object.send(@id),
-          attributes: @traversor.traverse_non_nested(@attributes)
+        base_hash = {
+            type: @type,
+            id:  current_object.send(@id)
         }
+
+        case @serialize_type
+          when :root
+            base_hash.merge!({
+               attributes: @traversor.traverse_non_nested(@attributes),
+               relationships: traverse_relationships(current_object)
+            })
+          when :relationship
+            base_hash
+          else
+            base_hash
+        end
       end
 
-      private :build_node
+      def traverse_relationships(current_object)
+        relationships = {}
+        @belongs_to_relationships.each do |belongs_to|
+          relationships[belongs_to[:relationship]] = belongs_to[:serializer].new(current_object.send(belongs_to[:relationship]), :relationship)
+                                .serialize
+        end
+        relationships
+      end
+
+      private :build_node, :traverse_relationships
     end
   end
 end
