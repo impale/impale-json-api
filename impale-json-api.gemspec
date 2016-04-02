@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Sebyx07']
   spec.email         = ['gore.sebyx@yahoo.com']
 
-  spec.summary       = %q{}
-  spec.description   = %q{}
+  spec.summary       = %q{Gem for serializing objects to the json-api format}
+  spec.description   = %q{Easy way to serialize objects to the json api format}
   spec.homepage      = 'https://github.com/impale/impale-json-api'
   spec.license       = 'MIT'
 
